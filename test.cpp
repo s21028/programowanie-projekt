@@ -12,10 +12,6 @@ void assertTrue(bool expression, int lineNum) {
 }
 
 int main() {
-
-  std::vector<int> v (0);
-  std::cout << v[10];
-
   matrix<int> empty(0, 0);
   ASSERT_TRUE(empty.m == 0);
   ASSERT_TRUE(empty.n == 0);
@@ -23,4 +19,10 @@ int main() {
   matrix<int> zero(3, 5);
   ASSERT_TRUE(zero[0][0] == 0);
   ASSERT_TRUE(zero[2][4] == 0);
+
+  matrix<int> random(4, 6);
+  random.random(1, 5);
+  random.print();
+  ASSERT_TRUE(random[0][0] >= 1);
+  ASSERT_TRUE(random[0][0] <= 5);
 }

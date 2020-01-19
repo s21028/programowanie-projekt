@@ -5,4 +5,3 @@ compile_test:
 
 test: compile_test
 	./test
-
