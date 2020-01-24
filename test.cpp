@@ -22,7 +22,8 @@ int main() {
 
   matrix<int> random(4, 6);
   random.random(1, 5);
-  random.print();
-  ASSERT_TRUE(random[0][0] >= 1);
-  ASSERT_TRUE(random[0][0] <= 5);
+  for (auto i = random.begin(); i != random.end(); ++i) {
+    ASSERT_TRUE(*i >= 1);
+    ASSERT_TRUE(*i <= 5);
+  }
 }

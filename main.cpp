@@ -17,6 +17,37 @@ struct matrix {
 
   void random(T min, T max);
   void print();
+
+  
+  class iterator
+  {
+  public:
+    iterator(matrix<T>& _m, int _i, int _j) : m(_m), cur_m(_i), cur_n(_j) {}
+    iterator operator++() {
+      cur_n++;
+      if (cur_n == m.n) {
+        cur_n = 0;
+        cur_m++;
+      }
+
+      return *this;
+    }
+    T& operator*() { return m[cur_m][cur_n]; }
+    T* operator->() { return m[cur_m][cur_n]; }
+    bool operator==(const iterator& o) { return cur_m == o.cur_m && cur_n == o.cur_n; }
+    bool operator!=(const iterator& o) { return cur_m != o.cur_m || cur_n != o.cur_n; }
+  private:
+    matrix<T>& m;
+    int cur_m, cur_n;
+  };
+
+  iterator begin() {
+    return iterator(*this, 0, 0);
+  }
+  
+  iterator end() {
+    return iterator(*this, m, 0);
+  }
 };
 
 template<typename T>
@@ -66,3 +97,5 @@ void matrix<T>::print() {
     std::cout << std::endl;
   }
 }
+
+
