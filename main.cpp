@@ -5,6 +5,17 @@
 using std::size_t;
 
 template<typename T>
+struct row {
+  size_t n;
+
+  T* values;
+
+  row(T* _values, size_t _n) : values(_values), n(_n) {}
+
+  T* operator[](size_t);
+};
+
+template<typename T>
 struct matrix {
   size_t m, n;
   T** values;
@@ -13,12 +24,13 @@ struct matrix {
   ~matrix();
 
   matrix<T>& operator=(const T);
-  T* operator[](size_t);
+  row<T> operator[](size_t);
+  const T* get_const(size_t);
+  matrix<T> operator+(const matrix<T>& other);
 
   void random(T min, T max);
   void print();
 
-  
   class iterator
   {
   public:
@@ -32,8 +44,8 @@ struct matrix {
 
       return *this;
     }
-    T& operator*() { return m[cur_m][cur_n]; }
-    T* operator->() { return m[cur_m][cur_n]; }
+    T& operator*() { return m.values[cur_m][cur_n]; }
+    T* operator->() { return m.values[cur_m][cur_n]; }
     bool operator==(const iterator& o) { return cur_m == o.cur_m && cur_n == o.cur_n; }
     bool operator!=(const iterator& o) { return cur_m != o.cur_m || cur_n != o.cur_n; }
   private:
@@ -50,6 +62,7 @@ struct matrix {
   }
 };
 
+
 template<typename T>
 matrix<T>::matrix(int _m, int _n) {
   m = _m;
@@ -62,7 +75,13 @@ matrix<T>::matrix(int _m, int _n) {
 }
 
 template<typename T>
-T* matrix<T>::operator[](size_t m) {
+row<T> matrix<T>::operator[](size_t m) {
+  row<T> r(values[m], this->n);
+  return r;
+}
+
+template<typename T>
+const T* matrix<T>::get_const(size_t m) {
   return values[m];
 }
 
@@ -98,4 +117,13 @@ void matrix<T>::print() {
   }
 }
 
+template<typename T>
+matrix<T> matrix<T>::operator+(const matrix<T>& other) {
+  matrix<T> result(m, n);
+  return result;
+}
 
+template<typename T>
+T* row<T>::operator[](size_t i) {
+  return &values[i];
+}
